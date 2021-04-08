@@ -104,5 +104,12 @@
     <ClInclude Include="Engine\Entity\water.h">
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+    <ClInclude Include="Engine\Entity\barrier.h">
+=======
+    <ClInclude Include="Engine\Entity\oil.h">
+>>>>>>> Stashed changes
+      <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

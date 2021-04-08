@@ -38,6 +38,14 @@ namespace Engine
 			case Engine::EEntityType::Water:
 				ent = new Water(pos);
 				break;
+<<<<<<< Updated upstream
+			case Engine::EEntityType::Barrier:
+				ent = new Barrier(pos);
+=======
+			case Engine::EEntityType::Oil:
+				ent = new Oil(pos);
+>>>>>>> Stashed changes
+				break;
 			default:
 				break;
 			}
@@ -154,6 +162,14 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Water:
 				new_entity = new Water(original->position);
+				break;
+<<<<<<< Updated upstream
+			case Engine::EEntityType::Barrier:
+				new_entity = new Barrier(original->position);
+=======
+			case Engine::EEntityType::Oil:
+				new_entity = new Oil(original->position);
+>>>>>>> Stashed changes
 				break;
 			default:
 				return;
@@ -282,7 +298,7 @@ namespace Engine
 						if (collide->state == EEntityState::Solid)
 							ent->velocity.y = 0;
 						else if (collide->state == EEntityState::Liquid)
-							ent->velocity.y = -gravity / 2;
+							ent->velocity.y = -1;
 					}
 					else
 						ent->velocity.y = -gravity;
@@ -292,14 +308,14 @@ namespace Engine
 				else if (ent->type == EEntityType::Water)
 				{
 					int rand = generate_random_change();
-					ent->position.x += rand;
+					ent->position.x += rand * 3;
 					if (IsPositionOccupied(ent, ent->position))
-						ent->position.x -= rand;
+						ent->position.x -= rand * 3;
 
 					while (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
 					{
 						Entity* collide = GetEntityCollided(ent, ent->position);
-						if (collide->state == EEntityState::Liquid)
+						if ((collide->state == EEntityState::Liquid) && (collide->type != EEntityType::Oil))
 						{
 							int rand = generate_random_change();
 							ent->position.x += rand;
@@ -319,6 +335,52 @@ namespace Engine
 							while (IsPositionOccupied(ent, ent->position))
 								ent->position.y += 1;
 						}
+						else break;
+					}
+					ent->position.y -= 1;
+					if ((IsPositionOccupied(ent, ent->position)) && (GetEntityCollided(ent, ent->position)->type != EEntityType::Oil))
+						ent->velocity.y = 0;
+					else
+						ent->velocity.y = -gravity;
+					ent->position.y += 1;
+				}
+
+				else if (ent->type == EEntityType::Oil)
+				{
+					int rand = generate_random_change();
+					ent->position.x += rand * 3;
+					if (IsPositionOccupied(ent, ent->position))
+						ent->position.x -= rand * 3;
+
+					while (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
+					{
+						Entity* collide = GetEntityCollided(ent, ent->position);
+						if (collide->type == EEntityType::Water)
+						{
+							ent->position.y += 1;
+							break;
+						}
+						else if (collide->state == EEntityState::Liquid)
+						{
+							int rand = generate_random_change();
+							ent->position.x += rand;
+							if (IsPositionOccupied(ent, ent->position))
+								ent->position.x -= 2 * rand;
+							if (IsPositionOccupied(ent, ent->position))
+							{
+								ent->position.x += rand;
+								if (ent->velocity.y <= 0)
+									ent->position.y += 1;
+								if (ent->velocity.y > 0)
+									ent->position.y -= 1;
+							}
+						}
+						else if (collide->state == EEntityState::Solid)
+						{
+							while (IsPositionOccupied(ent, ent->position))
+								ent->position.y += 1;
+						}
+						else break;
 					}
 					ent->position.y -= 1;
 					if (IsPositionOccupied(ent, ent->position))

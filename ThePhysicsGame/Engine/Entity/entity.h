@@ -10,6 +10,11 @@ namespace Engine
 		Bouncy,
 		Smoke,
 		Water,
+<<<<<<< Updated upstream
+		Barrier,
+=======
+		Oil,
+>>>>>>> Stashed changes
 	};
 
 	enum class EEntityState : int8_t
