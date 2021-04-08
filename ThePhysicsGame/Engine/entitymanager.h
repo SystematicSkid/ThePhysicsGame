@@ -83,7 +83,7 @@ namespace Engine
 				if (ent == ignore)
 					continue;
 				if (pos.x == ent->position.x && pos.y == ent->position.y)
-					ent;
+					return ent;
 			}
 			return nullptr;
 		}
@@ -237,24 +237,35 @@ namespace Engine
 				/* Collision Handling */
 				if (ent->type == EEntityType::Default)
 				{
-					while (IsPositionOccupied(ent, ent->position))
+					while (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
 					{
-						int rand = generate_random_change();
-						ent->position.x += rand;
-						if (IsPositionOccupied(ent, ent->position))
-							ent->position.x -= 2 * rand;
-						if (IsPositionOccupied(ent, ent->position))
+						Entity* collide = GetEntityCollided(ent, ent->position);
+						if (collide->state == EEntityState::Solid)
 						{
+							int rand = generate_random_change();
 							ent->position.x += rand;
-							if (ent->velocity.y <= 0)
-								ent->position.y += 1;
-							if (ent->velocity.y > 0)
-								ent->position.y -= 1;
+							if (IsPositionOccupied(ent, ent->position))
+								ent->position.x -= 2 * rand;
+							if (IsPositionOccupied(ent, ent->position))
+							{
+								ent->position.x += rand;
+								if (ent->velocity.y <= 0)
+									ent->position.y += 1;
+								if (ent->velocity.y > 0)
+									ent->position.y -= 1;
+							}
 						}
+						else break;
 					}
 					ent->position.y -= 1;
-					if (IsPositionOccupied(ent, ent->position))
-						ent->velocity.y = 0;
+					if (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
+					{
+						Entity* collide = GetEntityCollided(ent, ent->position);
+						if (collide->state == EEntityState::Solid)
+							ent->velocity.y = 0;
+						else if (collide->state == EEntityState::Liquid)
+							ent->velocity.y = -gravity / 2;
+					}
 					else
 						ent->velocity.y = -gravity;
 					ent->position.y += 1;
@@ -267,19 +278,28 @@ namespace Engine
 					if (IsPositionOccupied(ent, ent->position))
 						ent->position.x -= rand;
 
-					while (IsPositionOccupied(ent, ent->position))
+					while (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
 					{
-						int rand = generate_random_change();
-						ent->position.x += rand;
-						if (IsPositionOccupied(ent, ent->position))
-							ent->position.x -= 2 * rand;
-						if (IsPositionOccupied(ent, ent->position))
+						Entity* collide = GetEntityCollided(ent, ent->position);
+						if (collide->state == EEntityState::Liquid)
 						{
+							int rand = generate_random_change();
 							ent->position.x += rand;
-							if (ent->velocity.y <= 0)
+							if (IsPositionOccupied(ent, ent->position))
+								ent->position.x -= 2 * rand;
+							if (IsPositionOccupied(ent, ent->position))
+							{
+								ent->position.x += rand;
+								if (ent->velocity.y <= 0)
+									ent->position.y += 1;
+								if (ent->velocity.y > 0)
+									ent->position.y -= 1;
+							}
+						}
+						else if (collide->state == EEntityState::Solid)
+						{
+							while (IsPositionOccupied(ent, ent->position))
 								ent->position.y += 1;
-							if (ent->velocity.y > 0)
-								ent->position.y -= 1;
 						}
 					}
 					ent->position.y -= 1;
