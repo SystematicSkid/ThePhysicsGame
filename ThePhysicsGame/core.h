@@ -18,6 +18,8 @@ struct Vector2
 
 const int gravity = 10;
 const int16_t max_velocity = 3;
+static bool is_combo_open = false;
+
 
 template<class T>
 T clamp(T val, T min, T max) {
@@ -81,6 +83,7 @@ namespace Core
 		static const char* current_item = NULL;
 		if(ImGui::BeginCombo("Type", current_item))
 		{
+			is_combo_open = true;
 			for (int i = 0; i < IM_ARRAYSIZE(particles); i++)
 			{
 				bool is_selected = (current_item == particles[i]);
@@ -94,6 +97,10 @@ namespace Core
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndCombo();
+		}
+		else
+		{
+			is_combo_open = false;
 		}
 		ImGui::SameLine();
 		ImGui::SliderInt("Amount", &spawn_count, 1, 50);
@@ -130,10 +137,6 @@ namespace Core
 		// Rendering
 		ImGui::Render();
 		ImGuiIO& io = ImGui::GetIO();
-		//glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
-		//glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-		//glClear(GL_COLOR_BUFFER_BIT);
-		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 		glutSwapBuffers();

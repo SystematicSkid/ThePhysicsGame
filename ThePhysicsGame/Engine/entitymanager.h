@@ -171,7 +171,7 @@ namespace Engine
 			if (this->is_mouse_down)
 			{
 				/* Check if mouse pos is behind menu */
-				if(mouse_pos.y <= 450)
+				if(mouse_pos.y <= 450 && !is_combo_open)
 				{
 
 					/* Spawn test entity */
