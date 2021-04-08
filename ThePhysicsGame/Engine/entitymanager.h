@@ -211,7 +211,10 @@ namespace Engine
 					if (IsPositionOccupied(ent, ent->position))
 					{
 						ent->position.x += rand;
-						ent->position.y += 1;
+						if (ent->velocity.y <= 0)
+							ent->position.y += 1;
+						if (ent->velocity.y > 0)
+							ent->position.y -= 1;
 					}
 				}
 				if (IsOutOfBounds(ent))
