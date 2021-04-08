@@ -14,6 +14,8 @@ namespace Engine
 		/* Methods */
 		void AddEntity(Vector2 pos, EEntityType type)
 		{
+			/* Check for menu bounds */
+
 			Engine::Entity* ent = nullptr;
 			switch (type)
 			{
@@ -30,7 +32,7 @@ namespace Engine
 				ent = new Bouncy(pos);
 				break;
 			case Engine::EEntityType::Smoke:
-				ent = new Bouncy(pos);
+				ent = new Smoke(pos);
 				break;
 			default:
 				break;
@@ -168,33 +170,38 @@ namespace Engine
 			/* Do continuous mouse update */
 			if (this->is_mouse_down)
 			{
-				/* Spawn test entity */
-				for (int i = 0; i < this->spawn_size; i++)
+				/* Check if mouse pos is behind menu */
+				if(mouse_pos.y <= 450)
 				{
-					int rem = i % 3;
-					Vector2 pos = this->mouse_pos;
-					switch (rem)
-					{
-					case 0:
-						pos.x += i;
-						pos.y += i;
-						break;
-					case 1:
-						pos.x += i;
-						pos.y -= i;
 
-						break;
-					case 2:
-						pos.x -= i;
-						pos.y -= i;
-						break;
-					case 3:
-						pos.x -= i;
-						pos.y += i;
-						break;
+					/* Spawn test entity */
+					for (int i = 0; i < this->spawn_size; i++)
+					{
+						int rem = i % 3;
+						Vector2 pos = this->mouse_pos;
+						switch (rem)
+						{
+						case 0:
+							pos.x += i;
+							pos.y += i;
+							break;
+						case 1:
+							pos.x += i;
+							pos.y -= i;
+
+							break;
+						case 2:
+							pos.x -= i;
+							pos.y -= i;
+							break;
+						case 3:
+							pos.x -= i;
+							pos.y += i;
+							break;
+						}
+						if (!IsPositionOccupied(pos))
+							this->AddEntity(pos, this->spawn_type);
 					}
-					if(!IsPositionOccupied(pos))
-						this->AddEntity(pos, this->spawn_type);
 				}
 			}
 
