@@ -21,6 +21,12 @@ struct Vector2
 		this->y += v.y;
 		return *this;
 	}
+	Vector2& operator-(Vector2 v)
+	{
+		this->x -= v.x;
+		this->y -= v.y;
+		return *this;
+	}
 };
 
 const int gravity = 10;

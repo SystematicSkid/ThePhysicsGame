@@ -159,6 +159,12 @@ namespace Engine
 			memcpy(original, new_entity, sizeof(Entity));
 
 		}
+
+		void Impulse(Vector2 pos, float force)
+		{
+
+		}
+
 	public:
 		/* Particle relation updates */
 

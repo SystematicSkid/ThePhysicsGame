@@ -53,10 +53,15 @@ namespace Engine
 		}
 	public:
 		/* Implemented methods */
+		float Distance(Vector2 pos)
+		{
+			Vector2 delta = this->position - pos;
+			return sqrt(delta.x * delta.x + delta.y * delta.y);
+		}
+
 		float Distance(Entity* other)
 		{
-			Vector2 delta = { this->position.x - other->position.x, this->position.y - other->position.y };
-			return sqrt(delta.x * delta.x + delta.y * delta.y);
+			return this->Distance(other->position);
 		}
 
 		/* Virtual methods */
