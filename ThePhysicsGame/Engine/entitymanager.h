@@ -38,7 +38,7 @@ namespace Engine
 				if (entity_list[i] == ent)
 				{
 					entity_list.erase(entity_list.begin() + i);
-					free(ent);
+					delete ent;
 					return;
 				}
 		}
@@ -76,6 +76,71 @@ namespace Engine
 		{
 			return this->IsOutOfBounds(ent->position);
 		}
+
+		Entity* GetClosestOfType(Entity* from, EEntityType type)
+		{
+			float closest_dist = 100000.f;
+			Entity* closest_ent = nullptr;
+			for (auto ent : this->entity_list)
+			{
+				if(ent == from)
+					continue;
+				if(ent->type != type)
+					continue;
+				Vector2 delta = { from->position.x - ent->position.x, from->position.y - ent->position.y };
+				float dist = sqrt(delta.x * delta.x + delta.y * delta.y);
+				if (dist < closest_dist)
+				{
+					closest_dist = dist;
+					closest_ent = ent;
+				}
+			}
+			return closest_ent;
+		}
+
+		void ConvertEntity(Entity* original, EEntityType new_type)
+		{
+			if (original->type == new_type)
+				return; // No need!
+
+			Entity* new_entity = nullptr;
+			switch (new_type)
+			{
+			case Engine::EEntityType::Default:
+				new_entity = new DefaultEntity(original->position);
+				break;
+			case Engine::EEntityType::Gas:
+				new_entity = new Gas(original->position);
+				break;
+			case Engine::EEntityType::Fire:
+				new_entity = new Fire(original->position);
+				break;
+			default:
+				return;
+			}
+			memcpy(original, new_entity, sizeof(Entity));
+
+		}
+	public:
+		/* Particle relation updates */
+
+		void handle_fire()
+		{
+			for (auto ent : this->entity_list)
+			{
+				if(ent->type != EEntityType::Fire)
+					continue;
+				auto closest_ent = this->GetClosestOfType(ent, EEntityType::Gas);
+				if (closest_ent)
+				{
+					if (ent->Distance(closest_ent) <= 4)
+					{
+						ConvertEntity(closest_ent, EEntityType::Fire);
+					}
+				}
+			}
+		}
+
 
 	public:
 		/* Handlers */
@@ -117,6 +182,7 @@ namespace Engine
 
 			for (auto ent : entity_list)
 			{
+				//memset(entity_map, 0, sizeof(entity_map)); // Zero array
 				ent->OnSimulate(dt / 100.f);
 				/*while(IsPositionOccupied(ent, ent->position))
 				{
@@ -137,8 +203,14 @@ namespace Engine
 					if (ent->position.y > height)
 						ent->position.y -= 1;
 				}
+
+				//entity_map[ent->position.x][ent->position.y] = ent;
 			}
 			
+			/* Particle handlers */
+			handle_fire();
+
+			/* Remove and delete entities that have 'expired' */
 			std::for_each(entity_list.rbegin(), entity_list.rend(),
 				[=](const auto& ent)
 				{
@@ -152,6 +224,8 @@ namespace Engine
 		void Input(int button, int state, Vector2 pos)
 		{
 			this->is_mouse_down = !state;
+			pos.y = Renderer::Window::instance->get_height() - pos.y;
+			this->mouse_pos = pos;
 		}
 
 		void KeyboardInput(UCHAR key, Vector2 pos)

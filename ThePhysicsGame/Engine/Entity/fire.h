@@ -5,6 +5,8 @@ namespace Engine
 	class Fire : public Entity
 	{
 	public:
+		int heat = 0;
+	public:
 		/* Constructor */
 		Fire(Vector2 pos)
 		{
@@ -13,7 +15,8 @@ namespace Engine
 			this->col = { 255,50,0 };
 			this->state = EEntityState::Gas;
 			this->type = EEntityType::Fire;
-			this->lifetime = (xor_rand() % 40) + 1;;
+			this->lifetime = (xor_rand() % 40) + 1;
+			this->heat = 0;
 		}
 	public:
 		bool should_move_horizontal()

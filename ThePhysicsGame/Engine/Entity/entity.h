@@ -16,6 +16,7 @@ namespace Engine
 		Gas,
 	};
 
+	/* Shrink it! */
 	#pragma pack(1)
 	class Entity
 	{
@@ -49,7 +50,11 @@ namespace Engine
 		}
 	public:
 		/* Implemented methods */
-		//...
+		float Distance(Entity* other)
+		{
+			Vector2 delta = { this->position.x - other->position.x, this->position.y - other->position.y };
+			return sqrt(delta.x * delta.x + delta.y * delta.y);
+		}
 
 		/* Virtual methods */
 		virtual void OnSimulate(float dt) = 0;
