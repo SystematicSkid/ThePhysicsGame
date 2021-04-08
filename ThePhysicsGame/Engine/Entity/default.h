@@ -13,6 +13,7 @@ namespace Engine
 			this->velocity = { 0,0 };
 			this->state = EEntityState::Solid;
 			this->type = EEntityType::Default;
+			this->lifetime = -1;
 		}
 	public:
 		virtual void OnSimulate(float dt)
