@@ -80,6 +80,12 @@ namespace Engine
 			return this->IsOutOfBounds(ent->position);
 		}
 
+		int generate_random_change()
+		{
+			int rand_num = (xor_rand() % 3) - 1; // Do not use rand()! Huge performance hit!
+			return rand_num;
+		}
+
 		Entity* GetClosestOfType(Entity* from, EEntityType type)
 		{
 			float closest_dist = 100000.f;
@@ -190,11 +196,18 @@ namespace Engine
 			{
 				//memset(entity_map, 0, sizeof(entity_map)); // Zero array
 				ent->OnSimulate(dt / 100.f);
-				/*while(IsPositionOccupied(ent, ent->position))
+				while(IsPositionOccupied(ent, ent->position))
 				{
-					ent->position.y += 1;
-					//ent->position.x += 1;
-				}*/
+					int rand = generate_random_change();
+					ent->position.x += rand;
+					if (IsPositionOccupied(ent, ent->position))
+						ent->position.x -= 2 * rand;
+					if (IsPositionOccupied(ent, ent->position))
+					{
+						ent->position.x += rand;
+						ent->position.y += 1;
+					}
+				}
 				if (IsOutOfBounds(ent))
 				{
 					int width = Renderer::Window::instance->get_width();
