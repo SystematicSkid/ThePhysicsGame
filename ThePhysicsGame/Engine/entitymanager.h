@@ -76,6 +76,18 @@ namespace Engine
 			return false;
 		}
 
+		Entity* GetEntityCollided(Entity* ignore, Vector2 pos)
+		{
+			for (auto ent : entity_list)
+			{
+				if (ent == ignore)
+					continue;
+				if (pos.x == ent->position.x && pos.y == ent->position.y)
+					ent;
+			}
+			return nullptr;
+		}
+
 		bool IsOutOfBounds(Vector2 pos)
 		{
 			int width = Renderer::Window::instance->get_width() - 1;
