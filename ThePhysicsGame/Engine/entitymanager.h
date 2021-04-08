@@ -38,13 +38,10 @@ namespace Engine
 			case Engine::EEntityType::Water:
 				ent = new Water(pos);
 				break;
-<<<<<<< Updated upstream
 			case Engine::EEntityType::Barrier:
 				ent = new Barrier(pos);
-=======
 			case Engine::EEntityType::Oil:
 				ent = new Oil(pos);
->>>>>>> Stashed changes
 				break;
 			default:
 				break;
@@ -163,13 +160,10 @@ namespace Engine
 			case Engine::EEntityType::Water:
 				new_entity = new Water(original->position);
 				break;
-<<<<<<< Updated upstream
 			case Engine::EEntityType::Barrier:
 				new_entity = new Barrier(original->position);
-=======
 			case Engine::EEntityType::Oil:
 				new_entity = new Oil(original->position);
->>>>>>> Stashed changes
 				break;
 			default:
 				return;
@@ -397,24 +391,24 @@ namespace Engine
 					int height = Renderer::Window::instance->get_height();
 					if (ent->position.x < 0)
 					{
-						ent->velocity.x = 0;
+						ent->velocity.x *= -0.5;
 						ent->position.x += 1;
 					}
 					if (ent->position.x > width)
 					{
-						ent->velocity.x = 0;
+						ent->velocity.x *= -0.5;
 						ent->position.x -= 1;
 					}
 
 					if (ent->position.y < 0)
 					{
-						ent->velocity.y = 0;
+						ent->velocity.y *= -0.5;
 						ent->position.y += 1;
 
 					}
 					if (ent->position.y > height)
 					{
-						ent->velocity.y = 0;
+						ent->velocity.y *= -0.5;
 						ent->position.y -= 1;
 
 					}
