@@ -279,7 +279,7 @@ namespace Engine
 
 		void KeyboardInput(UCHAR key, Vector2 pos)
 		{
-			switch (key)
+			/*switch (key)
 			{
 			case '0':
 				this->spawn_type = EEntityType::Default;
@@ -302,7 +302,7 @@ namespace Engine
 				break;
 			default:
 				break;
-			}
+			}*/
 		}
 
 		void UpdateMousePosition(Vector2 pos)

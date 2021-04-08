@@ -22,10 +22,31 @@
     <Filter Include="Header Files\Engine\Entity">
       <UniqueIdentifier>{175a467b-fceb-4bfe-95c0-33fc2306ed94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Renderer\imgui">
+      <UniqueIdentifier>{f769f56b-136f-4ba2-95b9-b97c6b79ad09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui_draw.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui_widgets.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui_impl_glut.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui_tables.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\imgui\imgui_impl_opengl2.cpp">
+      <Filter>Header Files\Renderer\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +79,27 @@
     </ClInclude>
     <ClInclude Include="Engine\Entity\smoke.h">
       <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imgui.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imgui_internal.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imstb_textedit.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imstb_rectpack.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imstb_truetype.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imgui_impl_glut.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\imgui\imgui_impl_opengl2.h">
+      <Filter>Header Files\Renderer\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

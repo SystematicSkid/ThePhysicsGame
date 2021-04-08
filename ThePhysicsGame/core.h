@@ -44,6 +44,12 @@ unsigned long xor_rand(void)
 #include "./Renderer/window.h"
 #include "./Renderer/renderer.h"
 
+/* Renderer -> ImGui */
+#include "./Renderer/imgui/imgui.h"
+#include "./Renderer/imgui/imgui_internal.h"
+#include "./Renderer/imgui/imgui_impl_glut.h"
+#include "./Renderer/imgui/imgui_impl_opengl2.h"
+
 /* Engine -> Entity */
 #include "./Engine/Entity/entity.h"
 #include "./Engine/Entity/default.h"
@@ -62,6 +68,38 @@ namespace Core
 	int time_scale = 1;
 	int last_deltatime = 0;
 	Engine::EntityManager* entity_manager = nullptr;
+	static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	Engine::EEntityType selected_entity_type = Engine::EEntityType::Default;
+	int spawn_count = 1;
+
+	VOID render_menu()
+	{
+		ImGui::SetNextWindowSize({ 400, 50 });
+		ImGui::SetNextWindowPos({ 0,0 });
+		ImGui::Begin("Menu", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		const char* particles[] = { "Default", "Gas", "Fire", "Bouncy", "Smoke" };
+		static const char* current_item = NULL;
+		if(ImGui::BeginCombo("Type", current_item))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(particles); i++)
+			{
+				bool is_selected = (current_item == particles[i]);
+				if (ImGui::Selectable(particles[i], is_selected))
+				{
+					current_item = particles[i];
+					selected_entity_type = (Engine::EEntityType)i;
+					entity_manager->spawn_type = selected_entity_type;
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::SameLine();
+		ImGui::SliderInt("Amount", &spawn_count, 1, 50);
+		entity_manager->spawn_size = spawn_count;
+		ImGui::End();
+	}
 
 	VOID render_scene()
 	{
@@ -83,11 +121,27 @@ namespace Core
 			entity_manager->Update(dt);
 		}
 
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL2_NewFrame();
+		ImGui_ImplGLUT_NewFrame();
+
+		render_menu();
+
+		// Rendering
+		ImGui::Render();
+		ImGuiIO& io = ImGui::GetIO();
+		//glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
+		//glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+		//glClear(GL_COLOR_BUFFER_BIT);
+		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
+		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
 		glutSwapBuffers();
 	}
 
 	VOID handle_mouse(int button, int state, int x, int y)
 	{
+		ImGui_ImplGLUT_MouseFunc(button, state, x, y);
 		if (!entity_manager)
 			return;
 		Vector2 pos{ x, y };
@@ -96,6 +150,7 @@ namespace Core
 
 	VOID handle_mouse_move(int x, int y)
 	{
+		ImGui_ImplGLUT_MotionFunc(x, y);
 		if (!entity_manager)
 			return;
 		Vector2 pos{ x, y };
@@ -104,6 +159,7 @@ namespace Core
 
 	VOID handle_keyboard(UCHAR key, int x, int y)
 	{
+		ImGui_ImplGLUT_KeyboardFunc(key, x, y);
 		if (!entity_manager)
 			return;
 		Vector2 pos{ x, y };
@@ -140,11 +196,27 @@ namespace Core
 
 		/* Register our render callback */
 		glutDisplayFunc(render_scene);
+		
+
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ImGui::StyleColorsLight();
+
+		ImGui_ImplGLUT_Init();
+		ImGui_ImplGLUT_InstallFuncs();
+		ImGui_ImplOpenGL2_Init();
+
 		glutMouseFunc(handle_mouse);
 		glutIdleFunc(idle);
 		glutMotionFunc(handle_mouse_move);
 		glutKeyboardFunc(handle_keyboard);
+
 		glutMainLoop();
+
+		// Cleanup
+		ImGui_ImplOpenGL2_Shutdown();
+		ImGui_ImplGLUT_Shutdown();
+		ImGui::DestroyContext();
 
 		return TRUE;
 	}
