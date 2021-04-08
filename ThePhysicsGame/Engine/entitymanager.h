@@ -38,6 +38,7 @@ namespace Engine
 				if (entity_list[i] == ent)
 				{
 					entity_list.erase(entity_list.begin() + i);
+					free(ent);
 					return;
 				}
 		}
@@ -144,7 +145,6 @@ namespace Engine
 					if (ent->ShouldDelete())
 						this->RemoveEntity(ent);
 				});
-			
 			for (auto ent : entity_list)
 				ent->OnDraw();
 		}
