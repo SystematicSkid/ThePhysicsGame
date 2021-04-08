@@ -54,5 +54,6 @@ namespace Engine
 		/* Virtual methods */
 		virtual void OnSimulate(float dt) = 0;
 		virtual void OnDraw() = 0;
+		virtual bool ShouldDelete() = 0;
 	}; // Sizeof Entity: 0xE
 }

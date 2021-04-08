@@ -40,5 +40,10 @@ namespace Engine
 		{
 			render::pixel(this->position.x, this->position.y, this->col);
 		}
+
+		virtual bool ShouldDelete()
+		{
+			return this->lifetime == 0;
+		}
 	};
 }

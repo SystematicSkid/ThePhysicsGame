@@ -13,6 +13,7 @@ namespace Engine
 			this->col = { 255,172,166, 100};
 			this->state = EEntityState::Gas;
 			this->type = EEntityType::Gas;
+			this->lifetime = -1;
 		}
 	public:
 		int generate_random_change()
@@ -30,6 +31,11 @@ namespace Engine
 		virtual void OnDraw()
 		{
 			render::pixel(this->position.x, this->position.y, this->col);
+		}
+
+		virtual bool ShouldDelete()
+		{
+			return this->lifetime == 0;
 		}
 	};
 }

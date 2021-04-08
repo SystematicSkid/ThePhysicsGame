@@ -23,6 +23,9 @@ namespace Engine
 			case Engine::EEntityType::Gas:
 				ent = new Gas(pos);
 				break;
+			case Engine::EEntityType::Fire:
+				ent = new Fire(pos);
+				break;
 			default:
 				break;
 			}
@@ -134,6 +137,14 @@ namespace Engine
 						ent->position.y -= 1;
 				}
 			}
+			
+			std::for_each(entity_list.rbegin(), entity_list.rend(),
+				[=](const auto& ent)
+				{
+					if (ent->ShouldDelete())
+						this->RemoveEntity(ent);
+				});
+			
 			for (auto ent : entity_list)
 				ent->OnDraw();
 		}
@@ -152,6 +163,9 @@ namespace Engine
 				break;
 			case '1':
 				this->spawn_type = EEntityType::Gas;
+				break;
+			case '2':
+				this->spawn_type = EEntityType::Fire;
 				break;
 			case 'm':
 				this->spawn_size++;

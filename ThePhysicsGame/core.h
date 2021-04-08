@@ -105,7 +105,6 @@ namespace Core
 		if (!entity_manager)
 			return;
 		Vector2 pos{ x, y };
-		printf("%c\n", key);
 		entity_manager->KeyboardInput(key, pos);
 	}
 
