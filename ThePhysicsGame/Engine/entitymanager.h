@@ -37,6 +37,9 @@ namespace Engine
 			case Engine::EEntityType::Water:
 				ent = new Water(pos);
 				break;
+			case Engine::EEntityType::Barrier:
+				ent = new Barrier(pos);
+				break;
 			default:
 				break;
 			}
@@ -152,6 +155,9 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Water:
 				new_entity = new Water(original->position);
+				break;
+			case Engine::EEntityType::Barrier:
+				new_entity = new Barrier(original->position);
 				break;
 			default:
 				return;

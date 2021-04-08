@@ -104,5 +104,8 @@
     <ClInclude Include="Engine\Entity\water.h">
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Entity\barrier.h">
+      <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
