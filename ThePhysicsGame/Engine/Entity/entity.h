@@ -7,6 +7,7 @@ namespace Engine
 		Default = 0,
 		Gas,
 		Fire,
+		Bouncy,
 	};
 
 	enum class EEntityState : int8_t

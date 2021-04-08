@@ -26,6 +26,9 @@ namespace Engine
 			case Engine::EEntityType::Fire:
 				ent = new Fire(pos);
 				break;
+			case Engine::EEntityType::Bouncy:
+				ent = new Bouncy(pos);
+				break;
 			default:
 				break;
 			}
@@ -114,6 +117,9 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Fire:
 				new_entity = new Fire(original->position);
+				break;
+			case Engine::EEntityType::Bouncy:
+				new_entity = new Bouncy(original->position);
 				break;
 			default:
 				return;
@@ -240,6 +246,9 @@ namespace Engine
 				break;
 			case '2':
 				this->spawn_type = EEntityType::Fire;
+				break;
+			case '3':
+				this->spawn_type = EEntityType::Bouncy;
 				break;
 			case 'm':
 				this->spawn_size++;
