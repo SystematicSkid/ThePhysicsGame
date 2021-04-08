@@ -49,6 +49,7 @@ unsigned long xor_rand(void)
 #include "./Engine/Entity/default.h"
 #include "./Engine/Entity/gas.h"
 #include "./Engine/Entity/fire.h"
+#include "./Engine/Entity/smoke.h"
 #include "./Engine/Entity/bouncy.h"
 
 /* Engine */

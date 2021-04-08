@@ -151,6 +151,7 @@
     <ClInclude Include="Engine\Entity\entity.h" />
     <ClInclude Include="Engine\Entity\fire.h" />
     <ClInclude Include="Engine\Entity\gas.h" />
+    <ClInclude Include="Engine\Entity\smoke.h" />
     <ClInclude Include="Renderer\renderer.h" />
     <ClInclude Include="Renderer\window.h" />
   </ItemGroup>

@@ -29,6 +29,9 @@ namespace Engine
 			case Engine::EEntityType::Bouncy:
 				ent = new Bouncy(pos);
 				break;
+			case Engine::EEntityType::Smoke:
+				ent = new Bouncy(pos);
+				break;
 			default:
 				break;
 			}
@@ -126,6 +129,9 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Bouncy:
 				new_entity = new Bouncy(original->position);
+				break;
+			case Engine::EEntityType::Smoke:
+				new_entity = new Smoke(original->position);
 				break;
 			default:
 				return;
@@ -234,7 +240,15 @@ namespace Engine
 				[=](const auto& ent)
 				{
 					if (ent->ShouldDelete())
-						this->RemoveEntity(ent);
+					{
+						int rand_num = xor_rand() % 10;
+						if (ent->type == EEntityType::Fire && rand_num == 2) // random chance
+						{
+							this->ConvertEntity(ent, EEntityType::Smoke);
+						}
+						else
+							this->RemoveEntity(ent);
+					}
 				});
 			for (auto ent : entity_list)
 				ent->OnDraw();

@@ -8,6 +8,7 @@ namespace Engine
 		Gas,
 		Fire,
 		Bouncy,
+		Smoke,
 	};
 
 	enum class EEntityState : int8_t

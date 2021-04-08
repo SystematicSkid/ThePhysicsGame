@@ -56,5 +56,8 @@
     <ClInclude Include="Engine\Entity\bouncy.h">
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Entity\smoke.h">
+      <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
