@@ -202,21 +202,34 @@ namespace Engine
 			{
 				//memset(entity_map, 0, sizeof(entity_map)); // Zero array
 				ent->OnSimulate(dt / 100.f);
-				while(IsPositionOccupied(ent, ent->position))
+
+				/* Collision Handling */
+				if (ent->type == EEntityType::Default)
 				{
-					int rand = generate_random_change();
-					ent->position.x += rand;
-					if (IsPositionOccupied(ent, ent->position))
-						ent->position.x -= 2 * rand;
-					if (IsPositionOccupied(ent, ent->position))
+					while (IsPositionOccupied(ent, ent->position))
 					{
+						int rand = generate_random_change();
 						ent->position.x += rand;
-						if (ent->velocity.y <= 0)
-							ent->position.y += 1;
-						if (ent->velocity.y > 0)
-							ent->position.y -= 1;
+						if (IsPositionOccupied(ent, ent->position))
+							ent->position.x -= 2 * rand;
+						if (IsPositionOccupied(ent, ent->position))
+						{
+							ent->position.x += rand;
+							if (ent->velocity.y <= 0)
+								ent->position.y += 1;
+							if (ent->velocity.y > 0)
+								ent->position.y -= 1;
+						}
 					}
+					ent->position.y -= 1;
+					if (IsPositionOccupied(ent, ent->position))
+						ent->velocity.y = 0;
+					else
+						ent->velocity.y = -gravity;
+					ent->position.y += 1;
 				}
+
+
 				if (IsOutOfBounds(ent))
 				{
 					int width = Renderer::Window::instance->get_width();

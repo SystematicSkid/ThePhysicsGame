@@ -18,7 +18,7 @@ namespace Engine
 	public:
 		virtual void OnSimulate(float dt)
 		{
-			int y_change = (int)floor(gravity * dt);
+			//int y_change = (int)floor(gravity * dt);
 			if (this->position.y + this->velocity.y <= 0)
 			{
 				this->position.y = 0;
@@ -29,8 +29,8 @@ namespace Engine
 				else
 					this->velocity.x -= 1;*/
 			}
-			else
-				this->velocity.y -= y_change;
+			/*else
+				this->velocity.y -= y_change;*/
 			this->velocity.x = clamp<int16_t>(this->velocity.x, -max_velocity, max_velocity);
 			this->velocity.y = clamp<int16_t>(this->velocity.y, -max_velocity, max_velocity);
 			this->position.x += this->velocity.x;
