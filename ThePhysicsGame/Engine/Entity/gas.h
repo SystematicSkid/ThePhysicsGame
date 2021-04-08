@@ -24,8 +24,15 @@ namespace Engine
 	public:
 		virtual void OnSimulate(float dt)
 		{
-			this->position.x += generate_random_change();
-			this->position.y += generate_random_change();
+			if(this->velocity.x == 0 && this->velocity.y == 0)
+			{
+				this->position.x += generate_random_change();
+				this->position.y += generate_random_change();
+				return;
+			}
+
+			this->position.x = this->position.x + this->velocity.x;
+			this->position.y = this->position.y + this->velocity.y;
 		}
 
 		virtual void OnDraw()

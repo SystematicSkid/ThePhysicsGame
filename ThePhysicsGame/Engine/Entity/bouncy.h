@@ -36,15 +36,15 @@ namespace Engine
 			{
 				this->velocity.y *= -1;
 				this->numBounces++;
+				this->position.y = 0;
 			}
-
-
-
 
 			/*this->velocity.x = clamp<int16_t>(this->velocity.x, -max_velocity, max_velocity);
 			this->velocity.y = clamp<int16_t>(this->velocity.y, -max_velocity, max_velocity);*/
 			this->position.x += this->velocity.x;
 			this->position.y += (this->velocity.y / (this->numBounces));
+			this->velocity.x /= numBounces;
+			this->velocity.y /= numBounces;
 		}
 
 		virtual void OnDraw()

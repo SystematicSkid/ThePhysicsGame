@@ -8,6 +8,7 @@ namespace Engine
 		std::vector<Entity*> entity_list;
 		Vector2 mouse_pos;
 		bool is_mouse_down = false;
+		int mouse_button = 0;
 		int16_t spawn_size = 1;
 		Engine::EEntityType spawn_type = EEntityType::Default;
 	public:
@@ -92,7 +93,8 @@ namespace Engine
 		{
 			int width = Renderer::Window::instance->get_width() - 1;
 			int height = Renderer::Window::instance->get_height() - 1;
-			return pos.x >= 0 && pos.x <= width && pos.y >= 0 && pos.y <= height;
+
+			return pos.x < 0 || pos.x >= width || pos.y < 0 || pos.y >= height;
 		}
 
 		bool IsOutOfBounds(Entity* ent)
@@ -162,7 +164,18 @@ namespace Engine
 
 		void Impulse(Vector2 pos, float force)
 		{
-
+			for (auto* ent : this->entity_list)
+			{
+				auto length = static_cast<float>(ent->Distance(pos));
+				if(length > force * 100)
+					continue;
+				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
+				int16_t x_normalized = (int16_t)((dir.x / length) * force);
+				int16_t y_normalized = (int16_t)((dir.y / length) * force);
+				Vector2 normalized_dir = { x_normalized, y_normalized };
+				ent->velocity.x += (normalized_dir.x * force);
+				ent->velocity.y += (normalized_dir.y * force);
+			}
 		}
 
 	public:
@@ -177,7 +190,7 @@ namespace Engine
 				auto closest_ent = this->GetClosestOfType(ent, EEntityType::Gas);
 				if (closest_ent)
 				{
-					if (ent->Distance(closest_ent) <= 4)
+					if (ent->Distance(closest_ent) <= 8)
 					{
 						ConvertEntity(closest_ent, EEntityType::Fire);
 					}
@@ -223,8 +236,13 @@ namespace Engine
 							pos.y += i;
 							break;
 						}
-						if (!IsPositionOccupied(pos))
+						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
 							this->AddEntity(pos, this->spawn_type);
+					}
+
+					if (this->mouse_button == GLUT_RIGHT_BUTTON)
+					{
+						this->Impulse(mouse_pos, (this->spawn_size) / 2);
 					}
 				}
 			}
@@ -316,14 +334,28 @@ namespace Engine
 					int width = Renderer::Window::instance->get_width();
 					int height = Renderer::Window::instance->get_height();
 					if (ent->position.x < 0)
+					{
+						ent->velocity.x = 0;
 						ent->position.x += 1;
+					}
 					if (ent->position.x > width)
+					{
+						ent->velocity.x = 0;
 						ent->position.x -= 1;
+					}
 
 					if (ent->position.y < 0)
+					{
+						ent->velocity.y = 0;
 						ent->position.y += 1;
+
+					}
 					if (ent->position.y > height)
+					{
+						ent->velocity.y = 0;
 						ent->position.y -= 1;
+
+					}
 				}
 
 				//entity_map[ent->position.x][ent->position.y] = ent;
@@ -353,6 +385,7 @@ namespace Engine
 
 		void Input(int button, int state, Vector2 pos)
 		{
+			this->mouse_button = button;
 			this->is_mouse_down = !state;
 			pos.y = Renderer::Window::instance->get_height() - pos.y;
 			this->mouse_pos = pos;

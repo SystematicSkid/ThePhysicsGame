@@ -55,7 +55,7 @@ namespace Engine
 		/* Implemented methods */
 		float Distance(Vector2 pos)
 		{
-			Vector2 delta = this->position - pos;
+			Vector2 delta = { this->position.x - pos.x, this->position.y - pos.y };
 			return sqrt(delta.x * delta.x + delta.y * delta.y);
 		}
 

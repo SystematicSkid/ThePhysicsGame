@@ -35,6 +35,8 @@ namespace Engine
 				int rand_num = (xor_rand() % 3) - 1;
 				this->position.x += rand_num;
 			}
+			this->position.x = this->position.x + this->velocity.x;
+			this->position.y = this->position.y + this->velocity.y;
 			this->col.a--;
 		}
 
