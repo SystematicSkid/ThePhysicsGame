@@ -101,5 +101,8 @@
     <ClInclude Include="Renderer\imgui\imgui_impl_opengl2.h">
       <Filter>Header Files\Renderer\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Entity\water.h">
+      <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

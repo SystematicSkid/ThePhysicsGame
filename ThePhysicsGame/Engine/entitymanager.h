@@ -34,6 +34,9 @@ namespace Engine
 			case Engine::EEntityType::Smoke:
 				ent = new Smoke(pos);
 				break;
+			case Engine::EEntityType::Water:
+				ent = new Water(pos);
+				break;
 			default:
 				break;
 			}
@@ -135,6 +138,9 @@ namespace Engine
 			case Engine::EEntityType::Smoke:
 				new_entity = new Smoke(original->position);
 				break;
+			case Engine::EEntityType::Water:
+				new_entity = new Water(original->position);
+				break;
 			default:
 				return;
 			}
@@ -213,6 +219,36 @@ namespace Engine
 				/* Collision Handling */
 				if (ent->type == EEntityType::Default)
 				{
+					while (IsPositionOccupied(ent, ent->position))
+					{
+						int rand = generate_random_change();
+						ent->position.x += rand;
+						if (IsPositionOccupied(ent, ent->position))
+							ent->position.x -= 2 * rand;
+						if (IsPositionOccupied(ent, ent->position))
+						{
+							ent->position.x += rand;
+							if (ent->velocity.y <= 0)
+								ent->position.y += 1;
+							if (ent->velocity.y > 0)
+								ent->position.y -= 1;
+						}
+					}
+					ent->position.y -= 1;
+					if (IsPositionOccupied(ent, ent->position))
+						ent->velocity.y = 0;
+					else
+						ent->velocity.y = -gravity;
+					ent->position.y += 1;
+				}
+
+				else if (ent->type == EEntityType::Water)
+				{
+					int rand = generate_random_change();
+					ent->position.x += rand;
+					if (IsPositionOccupied(ent, ent->position))
+						ent->position.x -= rand;
+
 					while (IsPositionOccupied(ent, ent->position))
 					{
 						int rand = generate_random_change();

@@ -158,6 +158,7 @@
     <ClInclude Include="Engine\Entity\fire.h" />
     <ClInclude Include="Engine\Entity\gas.h" />
     <ClInclude Include="Engine\Entity\smoke.h" />
+    <ClInclude Include="Engine\Entity\water.h" />
     <ClInclude Include="Renderer\imgui\imgui.h" />
     <ClInclude Include="Renderer\imgui\imgui_impl_glut.h" />
     <ClInclude Include="Renderer\imgui\imgui_impl_opengl2.h" />
