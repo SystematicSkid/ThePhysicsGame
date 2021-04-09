@@ -93,16 +93,19 @@ namespace Core
 	Engine::EEntityType selected_entity_type = Engine::EEntityType::Sand;
 	int spawn_count = 1;
 	bool show_debug = false;
+	static float frames_per_second = 0.f;
+	static float logged_fps = 0.f;
+	static float last_time = 0.f;
 
 	VOID render_menu()
 	{
 		ImGui::SetNextWindowSize({ 500, 50 });
 		ImGui::SetNextWindowPos({ 0,0 });
 		ImGui::Begin("Menu", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-		const char* particles[] = { "Sand", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid", "Cloud"};
+		const char* particles[] = { "Sand", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid", "Cloud" };
 		static const char* current_item = NULL;
 		ImGui::SetNextItemWidth(150.f);
-		if(ImGui::BeginCombo("Type", current_item))
+		if (ImGui::BeginCombo("Type", current_item))
 		{
 			is_combo_open = true;
 			for (int i = 0; i < IM_ARRAYSIZE(particles); i++)
@@ -134,10 +137,29 @@ namespace Core
 			entity_manager->Clear();
 		}
 		ImGui::End();
+
+		if(show_debug)
+		{
+			ImGui::SetNextWindowPos({ 0, 50 });
+			ImGui::SetNextWindowSize({ 125,70 });
+			ImGui::Begin("Debug");
+			ImGui::Text("Particles: %i", entity_manager->entity_list.size());
+			ImGui::Text("FPS: %.0f", logged_fps);
+			ImGui::End();
+		}
+	
 	}
 
 	VOID render_scene()
 	{
+		float current_time = GetTickCount() * 0.001f;
+		frames_per_second++;
+		if (current_time - last_time > 1.f)
+		{
+			last_time = current_time;
+			logged_fps = frames_per_second;
+			frames_per_second = 0;
+		}
 		/* Add a step */
 		auto sleep_time = std::chrono::milliseconds(10 / time_scale);
 		std::this_thread::sleep_for(sleep_time);
@@ -191,6 +213,8 @@ namespace Core
 	VOID handle_keyboard(UCHAR key, int x, int y)
 	{
 		ImGui_ImplGLUT_KeyboardFunc(key, x, y);
+		if (key == 'd')
+			show_debug = !show_debug;
 		if (!entity_manager)
 			return;
 		Vector2 pos{ x, y };

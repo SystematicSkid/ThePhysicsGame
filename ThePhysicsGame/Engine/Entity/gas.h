@@ -16,20 +16,36 @@ namespace Engine
 			this->lifetime = -1;
 		}
 	public:
-		int generate_random_change()
+		int generate_random_change_x()
 		{
 			int rand_num = (xor_rand() % 3) - 1; // Do not use rand()! Huge performance hit!
+			return rand_num;
+		}
+
+		int generate_random_change_y()
+		{
+			int rand_num = (xor_rand() % 2);
+			if (xor_rand() % 2 == 0)
+				rand_num -= 1;
 			return rand_num;
 		}
 	public:
 		virtual void OnSimulate(float dt)
 		{
+
+			
 			if(this->velocity.x == 0 && this->velocity.y == 0)
 			{
-				this->position.x += generate_random_change();
-				this->position.y += generate_random_change();
+				this->position.x += generate_random_change_x();
+				this->position.y += generate_random_change_y();
+				if (this->position.y > Renderer::Window::instance->get_height())
+				{
+					this->position.y = Renderer::Window::instance->get_height() - 51;
+				}
 				return;
 			}
+
+			
 
 			this->position.x = this->position.x + this->velocity.x;
 			this->position.y = this->position.y + this->velocity.y;

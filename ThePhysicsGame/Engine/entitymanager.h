@@ -221,13 +221,13 @@ namespace Engine
 				if (length > force * 50)
 					continue;
 				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
-				int16_t x_normalized = (int16_t)((dir.x / length) * force);
-				int16_t y_normalized = (int16_t)((dir.y / length) * force);
+				int16_t x_normalized = (int16_t)((dir.x / length));
+				int16_t y_normalized = (int16_t)((dir.y / length));
 				x_normalized = clamp<int16_t>(x_normalized, -max_velocity, max_velocity);
 				y_normalized = clamp<int16_t>(y_normalized, -max_velocity, max_velocity);
 				Vector2 normalized_dir = { x_normalized, y_normalized };
-				ent->velocity.x += (normalized_dir.x);
-				ent->velocity.y += (normalized_dir.y);
+				ent->velocity.x += (normalized_dir.x * force);
+				ent->velocity.y += (normalized_dir.y * force);
 			}
 		}
 
@@ -304,60 +304,8 @@ namespace Engine
 			}
 		}
 
-
-	public:
-		/* Handlers */
-
-		void Update(int dt)
+		void handle_physics(int dt)
 		{
-			/* Do continuous mouse update */
-			if (this->is_mouse_down)
-			{
-				/* Check if mouse pos is behind menu */
-				if(mouse_pos.y <= 450 && !is_combo_open)
-				{
-
-					/* Spawn test entity */
-					for (int i = 0; i < this->spawn_size; i++)
-					{
-						int rem = i % spawn_size + 1;
-						Vector2 pos = this->mouse_pos;
-						int rand1 = xor_rand() % (2 * rem) - rem;
-						pos.x += rand1;
-						pos.y += std::min(xor_rand() % (2*rem) - rem - (rand1 / 2), xor_rand() % (2 * rem) - rem + (rand1 / 2));
-						/*switch (rem)
-						{
-						case 0:
-							pos.x += i;
-							pos.y += i;
-							break;
-						case 1:
-							pos.x += i;
-							pos.y -= i;
-
-							break;
-						case 2:
-							pos.x -= i;
-							pos.y -= i;
-							break;
-						case 3:
-							pos.x -= i;
-							pos.y += i;
-							break;
-						}*/
-						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
-						{
-							this->AddEntity(pos, this->spawn_type);
-						}
-					}
-
-					if (this->mouse_button == GLUT_RIGHT_BUTTON)
-					{
-						this->Impulse(mouse_pos, this->spawn_size);
-					}
-				}
-			}
-
 			for (auto ent : entity_list)
 			{
 				//memset(entity_map, 0, sizeof(entity_map)); // Zero array
@@ -517,6 +465,43 @@ namespace Engine
 
 				//entity_map[ent->position.x][ent->position.y] = ent;
 			}
+
+		}
+	public:
+		/* Handlers */
+
+		void Update(int dt)
+		{
+			/* Do continuous mouse update */
+			if (this->is_mouse_down)
+			{
+				/* Check if mouse pos is behind menu */
+				if (mouse_pos.y <= 450 && !is_combo_open)
+				{
+
+					/* Spawn test entity */
+					for (int i = 0; i < this->spawn_size; i++)
+					{
+						int rem = i % spawn_size + 1;
+						Vector2 pos = this->mouse_pos;
+						int rand1 = xor_rand() % (2 * rem) - rem;
+						pos.x += rand1;
+						pos.y += std::min(xor_rand() % (2 * rem) - rem - (rand1 / 2), xor_rand() % (2 * rem) - rem + (rand1 / 2));
+						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
+						{
+							this->AddEntity(pos, this->spawn_type);
+						}
+					}
+
+					if (this->mouse_button == GLUT_RIGHT_BUTTON)
+					{
+						this->Impulse(mouse_pos, this->spawn_size);
+					}
+				}
+			}
+
+			/* Physics handler */
+			handle_physics(dt);
 			
 			/* Particle handlers */
 			handle_fire();
