@@ -65,9 +65,6 @@
     <ClInclude Include="Engine\entitymanager.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Entity\default.h">
-      <Filter>Header Files\Engine\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Entity\gas.h">
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
@@ -114,7 +111,10 @@
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Entity\cloud.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Engine\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Entity\sand.h">
+      <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
