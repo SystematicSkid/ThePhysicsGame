@@ -484,9 +484,16 @@ namespace Engine
 					{
 						int rem = i % spawn_size + 1;
 						Vector2 pos = this->mouse_pos;
-						int rand1 = xor_rand() % (2 * rem) - rem;
-						pos.x += rand1;
-						pos.y += std::min(xor_rand() % (2 * rem) - rem - (rand1 / 2), xor_rand() % (2 * rem) - rem + (rand1 / 2));
+						int rand1 = xor_rand() % rem;
+						int rand1dir = generate_random_change();
+						int rand2 = xor_rand() % (rem * 2) - rem;
+
+						pos.x += rand1 * rand1dir;
+						if (rand2 >= 0)
+							pos.y += std::max(0, rand2 - (rand1 / 2));
+						else
+							pos.y += std::min(0, rand2 + (rand1 / 2));
+
 						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
 						{
 							this->AddEntity(pos, this->spawn_type);
