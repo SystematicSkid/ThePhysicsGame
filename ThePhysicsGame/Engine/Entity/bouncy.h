@@ -26,25 +26,35 @@ namespace Engine
 		{
 			int fall = (int)floor(gravity * dt);
 			this->velocity.y -= fall;
-			
-			//bounce off walls/ceilings
-			if (this->position.x >= Renderer::Window::instance->get_width() || this->position.x <= 0)
-			{
-				this->velocity.x *= -1;
-			}
-			if (this->position.y >= Renderer::Window::instance->get_height() || this->position.y <= 0)
-			{
-				this->velocity.y *= -1;
-				this->numBounces++;
-				this->position.y = 0;
-			}
 
-			/*this->velocity.x = clamp<int16_t>(this->velocity.x, -max_velocity, max_velocity);
-			this->velocity.y = clamp<int16_t>(this->velocity.y, -max_velocity, max_velocity);*/
 			this->position.x += this->velocity.x;
-			this->position.y += (this->velocity.y / (this->numBounces));
-			this->velocity.x /= numBounces;
-			this->velocity.y /= numBounces;
+			this->position.y += this->velocity.y;
+			
+			if (this->position.x < 0)
+			{
+				this->position.x = 0;
+				this->velocity.x *= -1;
+				this->velocity.x /= 2;
+			}
+			else if (this->position.x > Renderer::Window::instance->get_width())
+			{
+				this->position.x = Renderer::Window::instance->get_width();
+				this->velocity.x *= -1;
+				this->velocity.x /= 2;
+			}
+			
+			if (this->position.y < 0)
+			{
+				this->position.y = 0;
+				this->velocity.y *= -0.8;
+
+			}
+			else if (this->position.y > Renderer::Window::instance->get_height())
+			{
+				this->position.y = Renderer::Window::instance->get_height();
+				this->velocity.y *= -0.8;
+
+			}
 		}
 
 		virtual void OnDraw()

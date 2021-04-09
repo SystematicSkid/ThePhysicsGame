@@ -24,20 +24,23 @@ namespace Engine
 		virtual void OnSimulate(float dt)
 		{
 			int y_change = (int)floor(gravity * dt);
+			this->velocity.x = 0;
 			if (this->position.y + y_change > Renderer::Window::instance->get_height())
 			{
-				this->position.y = Renderer::Window::instance->get_height() - 1;
+				this->position.y = Renderer::Window::instance->get_height() - 51;
 			}
 			else
-				this->position.y += y_change;
+				this->velocity.y += y_change;
 			if (should_move_horizontal())
 			{
 				int rand_num = (xor_rand() % 3) - 1;
-				this->position.x += rand_num;
+				this->velocity.x += rand_num;
 			}
-			this->position.x = this->position.x + this->velocity.x;
-			this->position.y = this->position.y + this->velocity.y;
-			this->col.a--;
+			this->velocity.x = clamp<int16_t>(this->velocity.x, -max_velocity, max_velocity);
+			this->velocity.y = clamp<int16_t>(this->velocity.y, -max_velocity, max_velocity);
+			this->position.x += this->velocity.x;
+			this->position.y += this->velocity.y;
+			this->col.a--; // decrease alpha val
 		}
 
 		virtual void OnDraw()

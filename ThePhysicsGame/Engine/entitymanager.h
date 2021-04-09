@@ -106,7 +106,7 @@ namespace Engine
 		bool IsOutOfBounds(Vector2 pos)
 		{
 			int width = Renderer::Window::instance->get_width() - 1;
-			int height = Renderer::Window::instance->get_height() - 1;
+			int height = Renderer::Window::instance->get_height() - 51;
 
 			return pos.x < 0 || pos.x >= width || pos.y < 0 || pos.y >= height;
 		}
