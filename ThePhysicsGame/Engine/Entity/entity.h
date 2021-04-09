@@ -13,6 +13,7 @@ namespace Engine
 		Barrier,
 		Oil,
 		Acid,
+		Cloud,
 	};
 
 	enum class EEntityState : int8_t

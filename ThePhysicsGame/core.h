@@ -76,6 +76,7 @@ unsigned long xor_rand(void)
 #include "./Engine/Entity/barrier.h"
 #include "./Engine/Entity/oil.h"
 #include "./Engine/Entity/acid.h"
+#include "./Engine/Entity/cloud.h"
 
 /* Engine */
 #include "./Engine/entitymanager.h"
@@ -96,7 +97,7 @@ namespace Core
 		ImGui::SetNextWindowSize({ 500, 50 });
 		ImGui::SetNextWindowPos({ 0,0 });
 		ImGui::Begin("Menu", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-		const char* particles[] = { "Default", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid"};
+		const char* particles[] = { "Default", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid", "Cloud"};
 		static const char* current_item = NULL;
 		ImGui::SetNextItemWidth(150.f);
 		if(ImGui::BeginCombo("Type", current_item))

@@ -47,6 +47,9 @@ namespace Engine
 			case Engine::EEntityType::Acid:
 				ent = new Acid(pos);
 				break;
+			case Engine::EEntityType::Cloud:
+				ent = new Cloud(pos);
+				break;
 			default:
 				break;
 			}
@@ -181,6 +184,9 @@ namespace Engine
 			case Engine::EEntityType::Acid:
 				new_entity = new Acid(original->position);
 				break;
+			case Engine::EEntityType::Cloud:
+				new_entity = new Cloud(original->position);
+				break;
 			default:
 				return;
 			}
@@ -240,6 +246,21 @@ namespace Engine
 						Impulse(ent->position, 1);
 					}
 				}
+			}
+		}
+
+		void handle_clouds()
+		{
+			for (auto ent : this->entity_list)
+			{
+				if (ent->type != EEntityType::Cloud) continue;
+				
+				Cloud* c = (Cloud*)ent;
+				if (c->tick >= c->raindelay) {
+					c->reset_tick();
+					AddEntity(c->position, EEntityType::Water);
+				}
+				
 			}
 		}
 
@@ -483,6 +504,7 @@ namespace Engine
 			/* Particle handlers */
 			handle_fire();
 			handle_acid();
+			handle_clouds();
 
 			/* Remove and delete entities that have 'expired' */
 			std::for_each(entity_list.rbegin(), entity_list.rend(),

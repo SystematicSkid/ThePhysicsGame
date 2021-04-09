@@ -113,5 +113,8 @@
     <ClInclude Include="Engine\Entity\acid.h">
       <Filter>Header Files\Engine\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Entity\cloud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
