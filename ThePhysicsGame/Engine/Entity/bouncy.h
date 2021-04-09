@@ -30,6 +30,9 @@ namespace Engine
 			this->position.x += this->velocity.x;
 			this->position.y += this->velocity.y;
 			
+			if (this->velocity.y == 0)
+				this->velocity.x = 0;
+
 			if (this->position.x < 0)
 			{
 				this->position.x = 0;
