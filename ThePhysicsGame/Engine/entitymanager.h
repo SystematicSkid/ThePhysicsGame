@@ -9,6 +9,7 @@ namespace Engine
 		Vector2 mouse_pos;
 		bool is_mouse_down = false;
 		int mouse_button = 0;
+		int fire_frame_count = 0;
 		int16_t spawn_size = 1;
 		Engine::EEntityType spawn_type = EEntityType::Default;
 	public:
@@ -204,6 +205,8 @@ namespace Engine
 				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
 				int16_t x_normalized = (int16_t)((dir.x / length));
 				int16_t y_normalized = (int16_t)((dir.y / length));
+				x_normalized = clamp<int16_t>(x_normalized, -max_velocity, max_velocity);
+				y_normalized = clamp<int16_t>(y_normalized, -max_velocity, max_velocity);
 				Vector2 normalized_dir = { x_normalized, y_normalized };
 				ent->velocity.x += (-normalized_dir.x * force);
 				ent->velocity.y += (-normalized_dir.y * force);
@@ -215,14 +218,16 @@ namespace Engine
 			for (auto* ent : this->entity_list)
 			{
 				auto length = static_cast<float>(ent->Distance(pos));
-				if (length > force * 100)
+				if (length > force * 50)
 					continue;
 				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
 				int16_t x_normalized = (int16_t)((dir.x / length) * force);
 				int16_t y_normalized = (int16_t)((dir.y / length) * force);
+				x_normalized = clamp<int16_t>(x_normalized, -max_velocity, max_velocity);
+				y_normalized = clamp<int16_t>(y_normalized, -max_velocity, max_velocity);
 				Vector2 normalized_dir = { x_normalized, y_normalized };
-				ent->velocity.x += (normalized_dir.x * force);
-				ent->velocity.y += (normalized_dir.y * force);
+				ent->velocity.x += (normalized_dir.x);
+				ent->velocity.y += (normalized_dir.y);
 			}
 		}
 
@@ -231,6 +236,7 @@ namespace Engine
 
 		void handle_fire()
 		{
+			this->fire_frame_count = 0;
 			for (auto ent : this->entity_list)
 			{
 				if(ent->type != EEntityType::Fire)
@@ -243,7 +249,9 @@ namespace Engine
 					if (ent->Distance(closest_ent) <= 8)
 					{
 						ConvertEntity(closest_ent, EEntityType::Fire);
-						Impulse(ent->position, 1);
+						ImpulseBugged(ent->position, 1.f);
+						if (++this->fire_frame_count >= max_fire_per_frame)
+							return;
 					}
 				}
 			}
@@ -283,6 +291,12 @@ namespace Engine
 				{
 					if (ent->Distance(closest_ent) <= 1)
 					{
+						if (closest_ent->type == EEntityType::Water)
+						{
+							this->ConvertEntity(closest_ent, EEntityType::Gas);
+							ent->lifetime--;
+							continue;
+						}
 						this->RemoveEntity(closest_ent);
 						ent->lifetime--;
 					}
