@@ -68,7 +68,7 @@ unsigned long xor_rand(void)
 
 /* Engine -> Entity */
 #include "./Engine/Entity/entity.h"
-#include "./Engine/Entity/default.h"
+#include "./Engine/Entity/sand.h"
 #include "./Engine/Entity/gas.h"
 #include "./Engine/Entity/fire.h"
 #include "./Engine/Entity/smoke.h"
@@ -90,15 +90,16 @@ namespace Core
 	int last_deltatime = 0;
 	Engine::EntityManager* entity_manager = nullptr;
 	static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	Engine::EEntityType selected_entity_type = Engine::EEntityType::Default;
+	Engine::EEntityType selected_entity_type = Engine::EEntityType::Sand;
 	int spawn_count = 1;
+	bool show_debug = false;
 
 	VOID render_menu()
 	{
 		ImGui::SetNextWindowSize({ 500, 50 });
 		ImGui::SetNextWindowPos({ 0,0 });
 		ImGui::Begin("Menu", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-		const char* particles[] = { "Default", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid", "Cloud"};
+		const char* particles[] = { "Sand", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil", "Acid", "Cloud"};
 		static const char* current_item = NULL;
 		ImGui::SetNextItemWidth(150.f);
 		if(ImGui::BeginCombo("Type", current_item))

@@ -156,7 +156,7 @@
     <ClInclude Include="Engine\Entity\barrier.h" />
     <ClInclude Include="Engine\Entity\bouncy.h" />
     <ClInclude Include="Engine\Entity\cloud.h" />
-    <ClInclude Include="Engine\Entity\default.h" />
+    <ClInclude Include="Engine\Entity\sand.h" />
     <ClInclude Include="Engine\Entity\entity.h" />
     <ClInclude Include="Engine\Entity\fire.h" />
     <ClInclude Include="Engine\Entity\gas.h" />

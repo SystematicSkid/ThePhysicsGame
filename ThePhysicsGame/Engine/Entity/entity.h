@@ -4,7 +4,7 @@ namespace Engine
 {
 	enum class EEntityType : int8_t
 	{
-		Default = 0,
+		Sand = 0,
 		Gas,
 		Fire,
 		Bouncy,
@@ -41,13 +41,13 @@ namespace Engine
 		{
 			position = { 0, 0 };
 			col = { 255,255,255 };
-			type = EEntityType::Default;
+			type = EEntityType::Sand;
 		}
 
 		Entity(Vector2 position) : position(position)
 		{
 			col = { 255,255,255 };
-			type = EEntityType::Default;
+			type = EEntityType::Sand;
 			state = EEntityState::Solid;
 		}
 

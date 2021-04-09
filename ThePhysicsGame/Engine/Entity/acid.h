@@ -9,7 +9,7 @@ namespace Engine
 		Acid(Vector2 pos)
 		{
 			this->position = pos;
-			this->col = { 0,255,0 };
+			this->col = { 35,255,20 };
 			this->velocity = { 0,0 };
 			this->state = EEntityState::Liquid;
 			this->type = EEntityType::Acid;

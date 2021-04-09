@@ -2,17 +2,17 @@
 
 namespace Engine
 {
-	class DefaultEntity : public Entity
+	class Sand : public Entity
 	{
 	public:
 		/* Constructor */
-		DefaultEntity(Vector2 pos)
+		Sand(Vector2 pos)
 		{
 			this->position = pos;
-			this->col = { 255,255,255 };
+			this->col = { 255,210,40 };
 			this->velocity = { 0,0 };
 			this->state = EEntityState::Solid;
-			this->type = EEntityType::Default;
+			this->type = EEntityType::Sand;
 			this->lifetime = -1;
 		}
 	public:

@@ -11,7 +11,7 @@ namespace Engine
 		int mouse_button = 0;
 		int fire_frame_count = 0;
 		int16_t spawn_size = 1;
-		Engine::EEntityType spawn_type = EEntityType::Default;
+		Engine::EEntityType spawn_type = EEntityType::Sand;
 	public:
 		/* Methods */
 		void AddEntity(Vector2 pos, EEntityType type)
@@ -21,8 +21,8 @@ namespace Engine
 			Engine::Entity* ent = nullptr;
 			switch (type)
 			{
-			case Engine::EEntityType::Default:
-				ent = new DefaultEntity(pos);
+			case Engine::EEntityType::Sand:
+				ent = new Sand(pos);
 				break;
 			case Engine::EEntityType::Gas:
 				ent = new Gas(pos);
@@ -158,8 +158,8 @@ namespace Engine
 			Entity* new_entity = nullptr;
 			switch (new_type)
 			{
-			case Engine::EEntityType::Default:
-				new_entity = new DefaultEntity(original->position);
+			case Engine::EEntityType::Sand:
+				new_entity = new Sand(original->position);
 				break;
 			case Engine::EEntityType::Gas:
 				new_entity = new Gas(original->position);
@@ -282,7 +282,7 @@ namespace Engine
 				if (!closest_ent)
 					closest_ent = this->GetClosestOfType(ent, EEntityType::Bouncy);
 				if (!closest_ent)
-					closest_ent = this->GetClosestOfType(ent, EEntityType::Default);
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Sand);
 				if (!closest_ent)
 					closest_ent = this->GetClosestOfType(ent, EEntityType::Oil);
 				if (!closest_ent)
@@ -361,7 +361,7 @@ namespace Engine
 				ent->OnSimulate(dt / 100.f);
 
 				/* Collision Handling */
-				if (ent->type == EEntityType::Default)
+				if (ent->type == EEntityType::Sand)
 				{
 					while (IsPositionOccupied(ent, ent->position) && (GetEntityCollided(ent, ent->position) != nullptr))
 					{
