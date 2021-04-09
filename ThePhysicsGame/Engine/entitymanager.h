@@ -320,9 +320,11 @@ namespace Engine
 					/* Spawn test entity */
 					for (int i = 0; i < this->spawn_size; i++)
 					{
-						int rem = i % 3;
+						int rem = i % spawn_size + 1;
 						Vector2 pos = this->mouse_pos;
-						switch (rem)
+						pos.x += xor_rand() % (2*rem) - rem;
+						pos.y += xor_rand() % (2*rem) - rem;
+						/*switch (rem)
 						{
 						case 0:
 							pos.x += i;
@@ -341,7 +343,7 @@ namespace Engine
 							pos.x -= i;
 							pos.y += i;
 							break;
-						}
+						}*/
 						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
 						{
 							this->AddEntity(pos, this->spawn_type);
