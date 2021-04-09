@@ -242,14 +242,14 @@ namespace Engine
 				if(ent->type != EEntityType::Fire)
 					continue;
 				auto closest_ent = this->GetClosestOfType(ent, EEntityType::Gas);
-				if (!closest_ent)
+				if (!closest_ent || closest_ent->Distance(ent) > 10)
 					closest_ent = this->GetClosestOfType(ent, EEntityType::Oil);
 				if (closest_ent)
 				{
-					if (ent->Distance(closest_ent) <= 8)
+					if (ent->Distance(closest_ent) <= 10)
 					{
 						ConvertEntity(closest_ent, EEntityType::Fire);
-						ImpulseBugged(ent->position, 1.f);
+						Impulse(ent->position, 1.f);
 						if (++this->fire_frame_count >= max_fire_per_frame)
 							return;
 					}

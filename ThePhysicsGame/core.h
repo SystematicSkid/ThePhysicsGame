@@ -30,7 +30,7 @@ struct Vector2
 };
 
 const int gravity = 10;
-const int max_fire_per_frame = 50;
+const int max_fire_per_frame = 150;
 const int16_t max_velocity = 3;
 static bool is_combo_open = false;
 
