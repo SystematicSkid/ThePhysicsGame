@@ -237,7 +237,7 @@ namespace Engine
 					if (ent->Distance(closest_ent) <= 8)
 					{
 						ConvertEntity(closest_ent, EEntityType::Fire);
-						Impulse(ent->position, 1);
+						ImpulseBugged(ent->position, 1);
 					}
 				}
 			}
@@ -262,6 +262,12 @@ namespace Engine
 				{
 					if (ent->Distance(closest_ent) <= 1)
 					{
+						if (closest_ent->type == EEntityType::Water)
+						{
+							this->ConvertEntity(closest_ent, EEntityType::Gas);
+							ent->lifetime--;
+							continue;
+						}
 						this->RemoveEntity(closest_ent);
 						ent->lifetime--;
 					}
