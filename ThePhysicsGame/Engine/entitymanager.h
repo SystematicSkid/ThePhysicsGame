@@ -40,6 +40,7 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Barrier:
 				ent = new Barrier(pos);
+				break;
 			case Engine::EEntityType::Oil:
 				ent = new Oil(pos);
 				break;
@@ -162,6 +163,7 @@ namespace Engine
 				break;
 			case Engine::EEntityType::Barrier:
 				new_entity = new Barrier(original->position);
+				break;
 			case Engine::EEntityType::Oil:
 				new_entity = new Oil(original->position);
 				break;
@@ -247,7 +249,9 @@ namespace Engine
 							break;
 						}
 						if (!IsPositionOccupied(pos) && this->mouse_button == GLUT_LEFT_BUTTON)
+						{
 							this->AddEntity(pos, this->spawn_type);
+						}
 					}
 
 					if (this->mouse_button == GLUT_RIGHT_BUTTON)

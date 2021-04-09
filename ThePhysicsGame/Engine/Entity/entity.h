@@ -10,8 +10,8 @@ namespace Engine
 		Bouncy,
 		Smoke,
 		Water,
-		Oil,
 		Barrier,
+		Oil,
 	};
 
 	enum class EEntityState : int8_t
