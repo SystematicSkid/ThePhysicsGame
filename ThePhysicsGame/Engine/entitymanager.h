@@ -61,6 +61,14 @@ namespace Engine
 				}
 		}
 
+		void Clear()
+		{
+			for (auto ent : entity_list)
+				delete ent;
+			
+			entity_list.clear();
+		}
+
 		bool IsPositionOccupied(Vector2 pos)
 		{
 			for (auto ent : entity_list)

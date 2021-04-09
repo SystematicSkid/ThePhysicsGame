@@ -91,11 +91,12 @@ namespace Core
 
 	VOID render_menu()
 	{
-		ImGui::SetNextWindowSize({ 400, 50 });
+		ImGui::SetNextWindowSize({ 500, 50 });
 		ImGui::SetNextWindowPos({ 0,0 });
 		ImGui::Begin("Menu", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		const char* particles[] = { "Default", "Gas", "Fire", "Bouncy", "Smoke", "Water", "Barrier", "Oil"};
 		static const char* current_item = NULL;
+		ImGui::SetNextItemWidth(150.f);
 		if(ImGui::BeginCombo("Type", current_item))
 		{
 			is_combo_open = true;
@@ -118,8 +119,15 @@ namespace Core
 			is_combo_open = false;
 		}
 		ImGui::SameLine();
+		ImGui::SetNextItemWidth(125.f);
 		ImGui::SliderInt("Amount", &spawn_count, 1, 50);
 		entity_manager->spawn_size = spawn_count;
+		ImGui::SameLine(0.f, 10.f);
+		ImGui::SetNextItemWidth(125.f);
+		if (ImGui::Button("Clear", { 100, 25 }))
+		{
+			entity_manager->Clear();
+		}
 		ImGui::End();
 	}
 
