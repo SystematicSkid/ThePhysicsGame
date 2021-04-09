@@ -44,6 +44,9 @@ namespace Engine
 			case Engine::EEntityType::Oil:
 				ent = new Oil(pos);
 				break;
+			case Engine::EEntityType::Acid:
+				ent = new Acid(pos);
+				break;
 			default:
 				break;
 			}
@@ -175,6 +178,9 @@ namespace Engine
 			case Engine::EEntityType::Oil:
 				new_entity = new Oil(original->position);
 				break;
+			case Engine::EEntityType::Acid:
+				new_entity = new Acid(original->position);
+				break;
 			default:
 				return;
 			}
@@ -187,7 +193,23 @@ namespace Engine
 			for (auto* ent : this->entity_list)
 			{
 				auto length = static_cast<float>(ent->Distance(pos));
-				if(length > force * 100)
+				if(length > force * 10)
+					continue;
+				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
+				int16_t x_normalized = (int16_t)((dir.x / length));
+				int16_t y_normalized = (int16_t)((dir.y / length));
+				Vector2 normalized_dir = { x_normalized, y_normalized };
+				ent->velocity.x += (-normalized_dir.x * force);
+				ent->velocity.y += (-normalized_dir.y * force);
+			}
+		}
+
+		void ImpulseBugged(Vector2 pos, float force)
+		{
+			for (auto* ent : this->entity_list)
+			{
+				auto length = static_cast<float>(ent->Distance(pos));
+				if (length > force * 100)
 					continue;
 				Vector2 dir = { pos.x - ent->position.x, pos.y - ent->position.y };
 				int16_t x_normalized = (int16_t)((dir.x / length) * force);
@@ -208,11 +230,40 @@ namespace Engine
 				if(ent->type != EEntityType::Fire)
 					continue;
 				auto closest_ent = this->GetClosestOfType(ent, EEntityType::Gas);
+				if (!closest_ent)
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Oil);
 				if (closest_ent)
 				{
 					if (ent->Distance(closest_ent) <= 8)
 					{
 						ConvertEntity(closest_ent, EEntityType::Fire);
+						Impulse(ent->position, 1);
+					}
+				}
+			}
+		}
+
+		void handle_acid()
+		{
+			for (auto ent : this->entity_list)
+			{
+				if (ent->type != EEntityType::Acid)
+					continue;
+				auto closest_ent = this->GetClosestOfType(ent, EEntityType::Barrier);
+				if (!closest_ent)
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Bouncy);
+				if (!closest_ent)
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Default);
+				if (!closest_ent)
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Oil);
+				if (!closest_ent)
+					closest_ent = this->GetClosestOfType(ent, EEntityType::Water);
+				if (closest_ent)
+				{
+					if (ent->Distance(closest_ent) <= 1)
+					{
+						this->RemoveEntity(closest_ent);
+						ent->lifetime--;
 					}
 				}
 			}
@@ -264,7 +315,7 @@ namespace Engine
 
 					if (this->mouse_button == GLUT_RIGHT_BUTTON)
 					{
-						this->Impulse(mouse_pos, (this->spawn_size) / 2);
+						this->Impulse(mouse_pos, this->spawn_size);
 					}
 				}
 			}
@@ -311,7 +362,7 @@ namespace Engine
 					ent->position.y += 1;
 				}
 
-				else if (ent->type == EEntityType::Water)
+				else if (ent->type == EEntityType::Water || ent->type == EEntityType::Acid)
 				{
 					int rand = generate_random_change();
 					ent->position.x += rand * 3;
@@ -431,6 +482,7 @@ namespace Engine
 			
 			/* Particle handlers */
 			handle_fire();
+			handle_acid();
 
 			/* Remove and delete entities that have 'expired' */
 			std::for_each(entity_list.rbegin(), entity_list.rend(),

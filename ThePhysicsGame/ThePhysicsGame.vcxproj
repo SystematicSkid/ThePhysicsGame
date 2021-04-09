@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="core.h" />
     <ClInclude Include="Engine\entitymanager.h" />
+    <ClInclude Include="Engine\Entity\acid.h" />
     <ClInclude Include="Engine\Entity\barrier.h" />
     <ClInclude Include="Engine\Entity\bouncy.h" />
     <ClInclude Include="Engine\Entity\default.h" />

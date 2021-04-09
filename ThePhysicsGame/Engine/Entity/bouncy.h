@@ -13,8 +13,8 @@ namespace Engine
 			this->position = pos;
 			this->velocity = { 0,0 };
 			int seed = (xor_rand() % 2);
-			if (seed) this->velocity.x = 1;
-			else this->velocity.x = -1;
+			//if (seed) this->velocity.x = 1;
+			//else this->velocity.x = -1;
 			this->numBounces = 1;
 			this->col = { 27,181,53, 100 };
 			this->state = EEntityState::Solid;

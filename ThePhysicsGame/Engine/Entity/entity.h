@@ -12,6 +12,7 @@ namespace Engine
 		Water,
 		Barrier,
 		Oil,
+		Acid,
 	};
 
 	enum class EEntityState : int8_t
