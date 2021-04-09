@@ -322,8 +322,9 @@ namespace Engine
 					{
 						int rem = i % spawn_size + 1;
 						Vector2 pos = this->mouse_pos;
-						pos.x += xor_rand() % (2*rem) - rem;
-						pos.y += xor_rand() % (2*rem) - rem;
+						int rand1 = xor_rand() % (2 * rem) - rem;
+						pos.x += rand1;
+						pos.y += std::min(xor_rand() % (2*rem) - rem - (rand1 / 2), xor_rand() % (2 * rem) - rem + (rand1 / 2));
 						/*switch (rem)
 						{
 						case 0:
