@@ -27,13 +27,7 @@ namespace Engine
 	public:
 		virtual void OnSimulate(float dt)
 		{
-			//bounce off walls?
-
-			if (this->position.x <= 0 || this->position.x >= Renderer::Window::instance->get_width())
-				this->velocity.x *= -1;
-
 			this->tick++;
-			this->position.x = this->position.x + this->velocity.x;
 			this->lifetime--;
 		}
 
